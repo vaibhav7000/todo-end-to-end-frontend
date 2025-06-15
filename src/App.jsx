@@ -1,6 +1,6 @@
 import { CreateTodo } from "./Components/CreateTodo.jsx"
 import Todos from "./Components/Todos.jsx";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { titleSchema, descriptionSchema } from "./utils/types.js";
 
 function App() {
@@ -10,6 +10,15 @@ function App() {
     // title and description of todos are dynamic => must be wrapped inside the state => if title and content changes the react re-renders the website and DOM should be update
     const [ title, setTitle ] = useState("");
     const [ description, setDescription ] = useState("");
+
+    // here we will use useEffect to make the request to the backend server
+    // this will be called intially when the component get renders on the screen / mounts 
+    useEffect(getAllTodos,[]);
+
+    // the dependency array should contains only state variables either present inside the scope or passed as props
+    // calling the side-effect when the value present inside the dependency array changes (  )
+
+    
 
     async function addTodoToDatabase() {
         let result = titleSchema.safeParse(title);
@@ -124,3 +133,25 @@ export default App;
 
 // There are many ways to resolve the CORS error, 
 // 1. making the "browser happy" when sending the resposne from the backend server by providing some data that browser likes and hence it does not cause any error. These lovely things is provided automatically by a "dependency" called "Cors" that will be added at the backend side so that response contains lovely things that browser loves
+
+// useEffect hook (api provided by the react ) is use to "perform side effects in react applications", the side effect includes "data-fetching" from the server, manually updating the DOM elements, or adding eventlistner to the DOM etc. It allows us to perform task after the component is rendered / "mounts" on the screen (kind of DOMContentLoaded event-listner). 
+
+// => if we want to perform something after the component get render we should include that in the useEffect hook (this hook is will be used inside the functional components)
+
+// useEffect hook is similar to "DOMContentLoaded event-listner" that will call the provide function call after the component is loeded, "by-default useEffect call the function / side-effect once when the component gets loaded on the screen" but we can handle this
+
+// Syntax to use the "useEffect hook", 
+// useEffect hook takes 2 argument  1.side-effect function call, dependency array (using this we can control the call of the side-effect function)
+// 1. useEffect(function() { side effect }) -> this will call the side-effect function whenever componet re-render (no dependency array)
+// 2. useEffect(function, []) -> empty dependency array -> the side effect function will be called once when the component renders / mounts intially
+// 3. Specifying dependencies allows you to control when the effect runs based on changes to specific values.
+
+/* 
+Cleanup Function
+    The cleanup function in useEffect is essential for preventing memory leaks and for removing subscriptions or event listeners set up during component mounting.
+
+How It Works
+    The function passed to useEffect can return a cleanup function. This function is executed:
+    1. Before re-running the effect: If the component updates and useEffect is set to run again, the cleanup function from the previous render is executed first.
+    2. Before unmounting the component: When the component is about to unmount, React executes the cleanup function.
+*/
