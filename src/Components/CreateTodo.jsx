@@ -1,4 +1,6 @@
-export function CreateTodo() {
+import { titleSchema, descriptionSchema } from "../utils/types.js";
+
+export function CreateTodo({title, setTitle, description, setDescription, getAllTodos, addTodoToDatabase}) {
 
     // this component return the mark-up / XML that ideally becomes the html for the webpage
     // when writing js inside the XML we have to use curly braces { inside this we will write our js }
@@ -13,7 +15,11 @@ export function CreateTodo() {
                 gap: 10
             }}>
                 <label htmlFor="title">Title</label>
-                <input type="text" name="todoTitle" id="title" placeholder="Enter your todo title" />
+                <input onInput={function(event) {
+                    const domElement = event.target;
+                    const value = domElement.value;
+                    setTitle(value);
+                }} type="text" value={title} name="todoTitle" id="title" placeholder="Enter your todo title" />
             </div>
             
             <div className="description" style={{
@@ -21,11 +27,24 @@ export function CreateTodo() {
                 gap: 10
             }}>
                 <label htmlFor="description">Description</label>
-                <input type="text" name="todoDescription" id="description" placeholder="Enter your todo description" />
+                <input onInput={function(event) {
+                    const domElement = event.target;
+                    const value = domElement.value;
+
+                    setDescription(value);
+                }} type="text" value={description} name="todoDescription" id="description" placeholder="Enter your todo description" />
             </div>
 
             <div className="add-todo-container">
-                <button>Add todo</button>
+                <button onClick={async function() {
+                    const value = await addTodoToDatabase();
+
+                    if(value === true) {
+                        // not need to use the await because after that there is no task to do
+                        getAllTodos();
+                    }
+                    
+                }}>Add todo</button>
             </div>
         </div>
     )
