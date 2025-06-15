@@ -16,6 +16,7 @@ function App() {
 
         if(!result.success) {
             alert("Enter valid title");
+            setTitle(""); 
             return
         }
 
@@ -23,6 +24,7 @@ function App() {
 
         if(!result.success) {
             alert("Enter valid description")
+            setDescription("");
             return;
         }
         const titleFinal = title;
@@ -111,3 +113,14 @@ export default App;
 // 4. Componets maintains the content => if the content is dynamic => should we wrapped inside the state ( useState ), using this the React will re-render the website when the content will change
 
 // We use props to establish communication / transfer of data between child and parent, the flow of data should always starts from parent to child
+
+// All ABOUT CORS Error
+
+// Browser throws the "CORS" error ( its a security feature that is implemented from the browser end ), this feature allows the browser to only send request to domain through which it gets the html document, in React browser gets the html from the 5173 port and does not make the fetch request to the backend server at 3000. The browser
+
+// CORS errors are thrown when a web request (fetch) is made in the browser to an endpoint on a domain (localhost:3000 backend) that is different from the domain of the webpage (localhost:5173) making the request. "IMP" while the request reaches to the backend server the backend server does sends response to browser but missing something in headers that browser loves and hence browser causes the error called CORS error
+
+// CORS Errors are Browser Errors, that why the same request send from postman does not cause the CORS error, because it is Browser errors,
+
+// There are many ways to resolve the CORS error, 
+// 1. making the "browser happy" when sending the resposne from the backend server by providing some data that browser likes and hence it does not cause any error. These lovely things is provided automatically by a "dependency" called "Cors" that will be added at the backend side so that response contains lovely things
