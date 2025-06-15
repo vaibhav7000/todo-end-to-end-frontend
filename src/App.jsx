@@ -39,7 +39,7 @@ function App() {
                 method: "POST",
                 // the body should be a valid JSON format in the form of string
                 body: JSON.stringify({
-                    tite: titleFinal,
+                    title: titleFinal,
                     description: descriptionFinal,
                 }),
                 headers: {
@@ -50,7 +50,7 @@ function App() {
             const output = await response.json();
 
             alert(output.msg);
-            return false
+            return true;
         } catch (error) {
             alert("Something went wrong, the todo does not get added to the database");
             throw error;
@@ -62,7 +62,7 @@ function App() {
         try {
             const response = await fetch("http://localhost:3000/todos/allTodo", {
                 method: "GET",
-                body: JSON.stringify({}),
+                // body: JSON.stringify({}), does not send body when sending get request because it is not supported by the protocol send data in query params
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -70,7 +70,7 @@ function App() {
 
             // the frontent can also check if the resposne is string or json using "Content-Type"
             const allTodos = await response.json();
-            setTodos(allTodos);
+            setTodos(allTodos.todos);
         } catch(error) {
             alert("Something up with the backend server Not able to fetch all the todos");
             throw error
@@ -123,4 +123,4 @@ export default App;
 // CORS Errors are Browser Errors, that why the same request send from postman does not cause the CORS error, because it is Browser errors,
 
 // There are many ways to resolve the CORS error, 
-// 1. making the "browser happy" when sending the resposne from the backend server by providing some data that browser likes and hence it does not cause any error. These lovely things is provided automatically by a "dependency" called "Cors" that will be added at the backend side so that response contains lovely things
+// 1. making the "browser happy" when sending the resposne from the backend server by providing some data that browser likes and hence it does not cause any error. These lovely things is provided automatically by a "dependency" called "Cors" that will be added at the backend side so that response contains lovely things that browser loves
